@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Registro </title>
+ <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body class="bg-gray-100">
+    <div class="transition-all duration-300 w-full ">
+    <header class="bg-gray-50 text-gray-900 shadow-sm border-b border-gray-200">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <img src="../logo.png" alt="Logo" class="h-[60px] w-[60px]"> <span class="text-xl font-bold text-gray-700 ">Olive HRM</span>
+
+                    <!---->
+                </div>
+                <div class="flex items-center gap-6">
+
+                    <!----> <a href="#xxx" class="md:hidden p-2 text-gray-700 hover:text-gray-900 transition-colors"><!----><!----><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5h16M4 12h16M4 19h16"></path><!----></svg><!----></a>
+
+                </div>
+            </div>
+            <!---->
+            <!---->
+        </div>
+    </header>
+    <!----
+    Aquí va el formulario para crear un nuevo registro de empleado
+    -->
+<div class="flex flex-col w-full md:w-1/2 xl:w-2/5 mx-auto p-8 md:p-10 bg-white rounded-2xl shadow-xl">
+  <!-- Header -->
+  <div class="flex flex-row gap-3 pb-4">
+    <div>
+    </div>
+  </div>
+
+  <div class="text-lg font-medium text-gray-600 pb-8">
+    Nuevo Registro de Empleado
+  </div>
+
+  <!-- Formulario -->
+  <form class="flex flex-col space-y-4">
+    <!-- Nombre -->
+    <div>
+      <label for="name" class="block mb-2 text-sm font-medium text-gray-900">Nombre</label>
+      <input type="text" id="name" name="name" placeholder="Ej. Juan Pérez"
+        class="w-full bg-gray-50 text-gray-700 border border-gray-300 rounded-lg px-4 py-2 focus:ring-1 focus:ring-gray-400 focus:outline-none">
+    </div>
+
+    <!-- Edad -->
+    <div>
+      <label for="age" class="block mb-2 text-sm font-medium text-gray-900">Edad</label>
+      <input type="number" id="age" name="age" placeholder="Ej. 30"
+        class="w-full bg-gray-50 text-gray-700 border border-gray-300 rounded-lg px-4 py-2 focus:ring-1 focus:ring-gray-400 focus:outline-none">
+    </div>
+
+    <!-- Correo -->
+    <div>
+      <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Correo</label>
+      <input type="email" id="email" name="email" placeholder="ejemplo@correo.com"
+        class="w-full bg-gray-50 text-gray-700 border border-gray-300 rounded-lg px-4 py-2 focus:ring-1 focus:ring-gray-400 focus:outline-none">
+    </div>
+
+    <!-- Teléfono -->
+    <div>
+      <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Teléfono</label>
+      <input type="tel" id="phone" name="phone" placeholder="Ej. +52 998 123 4567"
+        class="w-full bg-gray-50 text-gray-700 border border-gray-300 rounded-lg px-4 py-2 focus:ring-1 focus:ring-gray-400 focus:outline-none">
+    </div>
+
+    <!-- Puesto -->
+    <div>
+      <label for="position" class="block mb-2 text-sm font-medium text-gray-900">Puesto</label>
+      <input type="text" id="position" name="position" placeholder="Ej. Recursos Humanos"
+        class="w-full bg-gray-50 text-gray-700 border border-gray-300 rounded-lg px-4 py-2 focus:ring-1 focus:ring-gray-400 focus:outline-none">
+    </div>
+
+    <!-- Departamento -->
+    <div>
+      <label for="department" class="block mb-2 text-sm font-medium text-gray-900">Departamento</label>
+      <input type="text" id="department" name="department" placeholder="Ej. Administración"
+        class="w-full bg-gray-50 text-gray-700 border border-gray-300 rounded-lg px-4 py-2 focus:ring-1 focus:ring-gray-400 focus:outline-none">
+    </div>
+
+    <!-- Botón -->
+    <button type="submit"
+  class="bg-gray-900 hover:bg-gray-800 text-white font-medium rounded-lg px-5 py-2.5 mt-4">
+  Registrar Empleado
+</button>
+
+  </form>
+</div>
+
+<script type="module" src="../js/config.js"></script>
+<script type="module" src="../registro.js"></script>
+
+    </body>
+    </html>

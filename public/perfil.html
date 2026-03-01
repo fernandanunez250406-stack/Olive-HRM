@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mi Perfil - Olive HRM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen flex flex-col">
+    <header class="bg-gray-900 text-white shadow-md">
+      <div
+        class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between"
+      >
+        <div class="flex items-center gap-3">
+          <img src="logo.png" alt="Logo" class="h-10 w-10" />
+          <h1 class="text-xl font-bold">Olive HRM</h1>
+        </div>
+        <nav class="flex gap-6 text-sm items-center">
+          <a
+            href="Empleado/empleados.html"
+            class="bg-gray-800 px-3 py-1.5 rounded hover:bg-gray-700 transition"
+            >Volver al Dashboard</a
+          >
+          <button
+            id="btn-logout-perfil"
+            class="text-red-400 hover:text-red-300 font-bold"
+          >
+            Logout
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-grow max-w-4xl mx-auto p-6 w-full">
+      <div
+        class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200"
+      >
+        <div class="h-32 bg-gradient-to-r from-blue-900 to-blue-700"></div>
+
+        <div class="px-8 pb-8">
+          <div
+            class="relative flex flex-col items-center md:items-start md:flex-row gap-6 -mt-12 mb-6"
+          >
+            <div
+              class="h-32 w-32 rounded-full border-4 border-white bg-gray-100 flex items-center justify-center text-5xl shadow-lg"
+            >
+              👤
+            </div>
+            <div class="mt-14 md:mt-16 text-center md:text-left">
+              <h2 id="perf-nombre" class="text-3xl font-bold text-gray-800">
+                Cargando...
+              </h2>
+              <p
+                id="perf-puesto"
+                class="text-blue-600 font-semibold uppercase tracking-wider"
+              >
+                Buscando puesto...
+              </p>
+            </div>
+            <button
+              id="btn-editar"
+              class="md:ml-auto mt-4 md:mt-16 bg-blue-900 hover:bg-blue-800 text-white px-6 py-2 rounded-lg font-medium transition shadow-md"
+            >
+              Editar Perfil
+            </button>
+          </div>
+
+          <form
+            id="form-perfil"
+            class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8"
+          >
+            <div class="space-y-1">
+              <label class="text-xs font-bold text-gray-500 uppercase"
+                >Teléfono</label
+              >
+              <input
+                type="text"
+                id="input-telefono"
+                class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                disabled
+              />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs font-bold text-gray-500 uppercase"
+                >Edad</label
+              >
+              <input
+                type="number"
+                id="input-edad"
+                class="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition"
+                disabled
+              />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs font-bold text-gray-500 uppercase"
+                >Departamento</label
+              >
+              <input
+                type="text"
+                id="input-depto"
+                class="w-full p-3 bg-gray-100 border border-gray-200 rounded-lg text-gray-400 cursor-not-allowed"
+                disabled
+              />
+            </div>
+            <div class="space-y-1">
+              <label class="text-xs font-bold text-gray-500 uppercase"
+                >Email Académico</label
+              >
+              <input
+                type="email"
+                id="input-email"
+                class="w-full p-3 bg-gray-100 border border-gray-200 rounded-lg text-gray-400 cursor-not-allowed"
+                disabled
+              />
+            </div>
+
+            <div
+              id="contenedor-botones"
+              class="hidden col-span-full flex gap-4 mt-4"
+            >
+              <button
+                type="submit"
+                class="bg-green-600 hover:bg-green-700 text-white px-8 py-2 rounded-lg font-bold shadow-lg transition"
+              >
+                Guardar Cambios
+              </button>
+              <button
+                type="button"
+                id="btn-cancelar"
+                class="bg-gray-200 hover:bg-gray-300 text-gray-800 px-8 py-2 rounded-lg font-bold transition"
+              >
+                Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <script type="module">
+      import { db, auth } from "./js/config.js";
+      import {
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+      import {
+        collection,
+        query,
+        where,
+        getDocs,
+        updateDoc,
+        doc,
+      } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
+
+      let docIdActual = "";
+
+      // 1. VERIFICACIÓN DE SESIÓN ROBUSTA
+      onAuthStateChanged(auth, async (user) => {
+        // Si no hay user en Firebase, revisamos el localStorage por si acaso
+        const localUser = localStorage.getItem("userEmail");
+
+        if (!user && !localUser) {
+          console.log("No hay sesión activa, redirigiendo...");
+          window.location.replace("index.html");
+          return;
+        }
+
+        const emailABuscar = user ? user.email : localUser;
+
+        try {
+          const q = query(
+            collection(db, "empleados"),
+            where("email", "==", emailABuscar),
+          );
+          const snap = await getDocs(q);
+
+          if (snap.empty) {
+            console.warn(
+              "No se encontró el documento del empleado en Firestore",
+            );
+            return;
+          }
+
+          snap.forEach((documento) => {
+            docIdActual = documento.id;
+            const data = documento.data();
+
+            // Llenar la interfaz
+            document.getElementById("perf-nombre").innerText =
+              data.nombre || "Usuario";
+            document.getElementById("perf-puesto").innerText =
+              data.puesto || "Empleado";
+            document.getElementById("input-telefono").value =
+              data.telefono || "";
+            document.getElementById("input-edad").value = data.edad || "";
+            document.getElementById("input-depto").value =
+              data.departamento || "General";
+            document.getElementById("input-email").value =
+              data.email || emailABuscar;
+          });
+        } catch (error) {
+          console.error("Error al cargar datos del perfil:", error);
+        }
+      });
+
+      // 2. LÓGICA DE EDICIÓN (Botones)
+      const btnEditar = document.getElementById("btn-editar");
+      const btnCancelar = document.getElementById("btn-cancelar");
+      const contenedorBotones = document.getElementById("contenedor-botones");
+      const inputsEditables = [
+        document.getElementById("input-telefono"),
+        document.getElementById("input-edad"),
+      ];
+
+      btnEditar.addEventListener("click", () => {
+        inputsEditables.forEach((i) => {
+          i.disabled = false;
+          i.classList.replace("bg-gray-50", "bg-white");
+          i.classList.add("border-blue-400", "ring-2", "ring-blue-100");
+        });
+        contenedorBotones.classList.remove("hidden");
+        btnEditar.classList.add("hidden");
+      });
+
+      btnCancelar.addEventListener("click", () => {
+        // En lugar de recargar toda la página, solo revertimos los cambios visuales
+        location.reload();
+      });
+
+      // 3. GUARDAR CAMBIOS
+      document
+        .getElementById("form-perfil")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+          if (!docIdActual)
+            return alert("Error: No se pudo identificar el documento.");
+
+          const ref = doc(db, "empleados", docIdActual);
+          try {
+            await updateDoc(ref, {
+              telefono: document.getElementById("input-telefono").value,
+              edad: document.getElementById("input-edad").value,
+            });
+            alert("✅ ¡Perfil actualizado correctamente!");
+            location.reload();
+          } catch (error) {
+            console.error("Error al actualizar Firestore:", error);
+            alert("Hubo un error al guardar los cambios.");
+          }
+        });
+
+      // 4. LOGOUT SEGURO
+      document
+        .getElementById("btn-logout-perfil")
+        .addEventListener("click", async () => {
+          try {
+            await signOut(auth);
+            localStorage.clear(); // Limpiamos todo el rastro
+            window.location.replace("index.html");
+          } catch (error) {
+            console.error("Error al cerrar sesión:", error);
+          }
+        });
+    </script>
+  </body>
+</html>

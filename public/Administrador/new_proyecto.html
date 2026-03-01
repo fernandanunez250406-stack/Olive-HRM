@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar Proyecto - Olive HRM</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white rounded-xl shadow-xl w-full max-w-2xl p-8">
+      <div class="flex items-center gap-3 border-b border-gray-200 pb-4 mb-6">
+        <img src="../logo.png" alt="Logo" class="h-10 w-10" />
+        <h1 class="text-2xl font-bold text-blue-900">
+          Registrar Nuevo Proyecto
+        </h1>
+      </div>
+
+      <form id="form-proyecto" class="space-y-5">
+        <div>
+          <label
+            for="nombreProyecto"
+            class="block text-sm font-medium text-gray-900 mb-1"
+            >Nombre del Proyecto</label
+          >
+          <input
+            type="text"
+            id="nombreProyecto"
+            required
+            placeholder="Ej. Optimización Nómina"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-50 focus:ring-1 focus:ring-blue-900 outline-none"
+          />
+        </div>
+
+        <div>
+          <label
+            for="cliente"
+            class="block text-sm font-medium text-gray-900 mb-1"
+            >Cliente / Departamento</label
+          >
+          <input
+            type="text"
+            id="cliente"
+            required
+            placeholder="Ej. Recursos Humanos"
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-50 focus:ring-1 focus:ring-blue-900 outline-none"
+          />
+        </div>
+
+        <div>
+          <label
+            for="integrantes"
+            class="block text-sm font-medium text-gray-900 mb-1"
+            >Responsable Asignado</label
+          >
+          <select
+            id="integrantes"
+            required
+            class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-50 focus:ring-1 focus:ring-blue-900 outline-none"
+          >
+            <option value="">Cargando empleados...</option>
+          </select>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label
+              for="fechaEntrega"
+              class="block text-sm font-medium text-gray-900 mb-1"
+              >Fecha de Entrega</label
+            >
+            <input
+              type="date"
+              id="fechaEntrega"
+              required
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-50 focus:ring-1 focus:ring-blue-900 outline-none"
+            />
+          </div>
+          <div>
+            <label
+              for="estado"
+              class="block text-sm font-medium text-gray-900 mb-1"
+              >Estado Inicial</label
+            >
+            <select
+              id="estado"
+              class="w-full border border-gray-300 rounded-lg px-4 py-2 bg-gray-50 focus:ring-1 focus:ring-blue-900 outline-none"
+            >
+              <option value="Planeado">Planeado 📅</option>
+              <option value="En curso">En curso 🚀</option>
+              <option value="Finalizado">Finalizado ✅</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-4 pt-4">
+          <button
+            type="button"
+            onclick="window.history.back()"
+            class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium rounded-lg px-5 py-2.5"
+          >
+            Cancelar
+          </button>
+          <button
+            type="submit"
+            class="bg-blue-900 hover:bg-blue-800 text-white font-medium rounded-lg px-5 py-2.5"
+          >
+            Registrar Proyecto
+          </button>
+        </div>
+      </form>
+    </div>
+    <script type="module" src="../js/proyectos.js"></script>
+  </body>
+</html>
